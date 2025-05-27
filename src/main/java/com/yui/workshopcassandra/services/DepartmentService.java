@@ -28,4 +28,16 @@ public class DepartmentService {
 
         return new DepartmentDTO(result);
     }
+
+    public DepartmentDTO insert(DepartmentDTO dto){
+        Department dep = new Department();
+        dep.setId(UUID.randomUUID());
+        copy(dto, dep);
+        dep = repository.insert(dep);
+        return  new DepartmentDTO(dep);
+    }
+
+    private void copy(DepartmentDTO dto, Department dep){
+        dep.setName(dto.getName());
+    }
 }
