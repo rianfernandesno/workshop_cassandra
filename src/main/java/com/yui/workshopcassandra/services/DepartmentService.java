@@ -23,9 +23,7 @@ public class DepartmentService {
     }
 
     public DepartmentDTO findById(UUID id){
-        Optional<Department> dep = repository.findById(id);
-        Department result = dep.orElseThrow(()-> new ResourceNotFoundException("Objeto não encontrado"));
-
+        Department result = getRefById(id);
         return new DepartmentDTO(result);
     }
 
@@ -35,6 +33,19 @@ public class DepartmentService {
         copy(dto, dep);
         dep = repository.insert(dep);
         return  new DepartmentDTO(dep);
+    }
+
+    public DepartmentDTO update(UUID id, DepartmentDTO dto){
+        Department result = getRefById(id);
+        copy(dto, result);
+        result = repository.save(result);
+        return new DepartmentDTO(result);
+    }
+
+    public Department getRefById(UUID id){
+        Optional<Department> dep = repository.findById(id);
+        return dep.orElseThrow(()-> new ResourceNotFoundException("Objeto não encontrado"));
+
     }
 
     private void copy(DepartmentDTO dto, Department dep){
