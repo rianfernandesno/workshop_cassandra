@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -21,6 +23,14 @@ public class ProductController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<ProductDTO> findById(@PathVariable UUID id){
         ProductDTO result = service.findById(id);
+
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<ProductDTO>> findByDepartment(
+            @RequestParam(name = "department", defaultValue = "") String department){
+        List<ProductDTO> result = service.findByDepartment(department);
 
         return ResponseEntity.ok().body(result);
     }
